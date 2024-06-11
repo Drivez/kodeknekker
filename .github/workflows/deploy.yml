@@ -1,0 +1,51 @@
+name: Deploy Kodeknekker Application
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Check and Install Composer
+        run: |
+          composer self-update
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-interaction
+
+      - name: Run migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: sqlite
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run npm build
+        run: npm run build
+
+      - name: Upload to server
+        env:
+            HOST: ${{ secrets.HOST }}
+            USERNAME: ${{ secrets.USERNAME }}
+            PASSWORD: ${{ secrets.PASSWORD }}
+            SSH_PORT: ${{ secrets.SSH_PORT }}
+          run: |
+            sshpass -p $PASSWORD rsync -avz -e "ssh -p $SSH_PORT" --exclude=node_modules --exclude=vendor ./ $USERNAME@$HOST:kodeknekker
+            sshpass -p $PASSWORD ssh -p $SSH_PORT $USERNAME@$HOST "cd kodeknekker && composer install --no-interaction --prefer-dist && php artisan migrate --force"
