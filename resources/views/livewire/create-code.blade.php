@@ -4,7 +4,7 @@
                   class="bg-white/10 text-white py-2 px-3 rounded-xl w-full"></textarea>
 
         <div class="mt-2 flex justify-end">
-            <button type="button" @disabled(! $message) @click="window.print()" class="bg-blue-500 px-4 py-1 text-sm font-semibold rounded-md disabled:bg-gray-300">Print</button>
+            <button type="button" @disabled(! $message) @click="window.print()" class="bg-emerald-600 px-4 py-1 text-sm font-semibold rounded-md disabled:bg-gray-300">Print</button>
         </div>
     </form>
 

@@ -22,11 +22,14 @@ class CreateCode extends Component
         'mode_cool',
         'bedroom_baby',
         'flatware',
+        'stat_3',
         'single_bed',
         'sprinkler',
         'umbrella',
         'token',
+        'key_vertical',
         'skillet',
+        "sailing",
         'stadia_controller',
         'airwave',
         'floor_lamp',
@@ -43,7 +46,10 @@ class CreateCode extends Component
     {
         shuffle($this->symbols);
 
-        return collect(range('a', 'z'))
+        return collect( [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            'Æ', 'Ø', 'Å',
+        ])
             ->combine($this->symbols)
             ->toArray();
     }
