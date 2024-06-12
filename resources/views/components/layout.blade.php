@@ -8,6 +8,7 @@
     <title>Kodeknekker</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script defer src="https://umami.kildedalcloud.com/script.js" data-website-id="3073c263-8788-4645-8704-fc1c06643594"></script>
 </head>
 <body class="pt-8 bg-primary text-white print:bg-white print:text-black grid place-items-center h-full">
     {{ $slot }}
