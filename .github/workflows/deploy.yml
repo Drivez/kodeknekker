@@ -44,8 +44,11 @@ jobs:
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          sshpass -p $PASSWORD rsync -avz -e "ssh -p $SSH_PORT" --exclude=node_modules --exclude=vendor ./ $USERNAME@$HOST:kodeknekker
-          sshpass -p $PASSWORD ssh -p $SSH_PORT $USERNAME@$HOST "cd kodeknekker && composer install --no-interaction --prefer-dist && php artisan migrate --force"
+          echo "$SSH_PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          rsync -avz -e "ssh -i private_key -p $SSH_PORT" --exclude=node_modules --exclude=vendor ./ $USERNAME@$HOST:kodeknekker
+          ssh -i private_key -p $SSH_PORT $USERNAME@$HOST "cd kodeknekker && composer install --no-interaction --prefer-dist && php artisan migrate --force"
+        shell: bash
