@@ -49,6 +49,5 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
-          rsync -avz -e "ssh -i private_key -p $SSH_PORT -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" --exclude=node_modules --exclude=vendor ./ $USERNAME@$HOST:kodeknekker
           ssh -i private_key -p $SSH_PORT -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $USERNAME@$HOST "cd kodeknekker && composer install --no-interaction --prefer-dist && php artisan migrate --force"
         shell: bash
